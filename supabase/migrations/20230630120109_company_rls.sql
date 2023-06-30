@@ -1,0 +1,1 @@
+alter table company enable row level security;

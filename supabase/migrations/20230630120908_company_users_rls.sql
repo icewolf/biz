@@ -1,0 +1,2 @@
+ALTER TABLE company_users ENABLE ROW LEVEL SECURITY;
+
