@@ -2,6 +2,7 @@ import type { Client } from '$lib/types/invoiceninja/client';
 import type { GenericManyResponse } from '$lib/types/invoiceninja/generic-many-response.js';
 import type { Task } from '$lib/types/invoiceninja/task.js';
 import type { Card } from '$lib/types/trello/card.js';
+import type { List } from '$lib/types/trello/list.js';
 import { filterOptions, type FilterOptions } from './shared.js';
 
 export const load = async ({
@@ -19,18 +20,23 @@ export const load = async ({
 		// ignore
 	}
 
-	const { data: tasks } = await invoiceNinja
-		.url('/tasks')
-		.query({ per_page: 500, client_id: clientId, include: 'status,client,invoice' })
-		.get()
-		.json<GenericManyResponse<Task>>();
-
-	const trelloCards = await trello.url(`/boards/${boardId}/cards/all`).get().json<Card[]>();
+	const [{ data: tasks }, trelloLists, trelloCards] = await Promise.all([
+		invoiceNinja
+			.url('/tasks')
+			.query({ per_page: 500, client_id: clientId, include: 'status,client,invoice' })
+			.get()
+			.json<GenericManyResponse<Task>>(),
+		trello.url(`/boards/${boardId}/lists`).get().json<List[]>(),
+		trello.url(`/boards/${boardId}/cards/all`).get().json<Card[]>()
+	]);
 
 	const activeTasks = tasks.filter((task) => !task.is_deleted);
 	const trelloTasks = trelloCards
 		.map((trelloCard) => ({
 			...trelloCard,
+			list: trelloCard.idList
+				? trelloLists.find((list) => list.id === trelloCard.idList)
+				: undefined,
 			invoiceNinjaTasks: activeTasks.filter((inTask) =>
 				inTask.custom_value1.includes(trelloCard.shortUrl)
 			)

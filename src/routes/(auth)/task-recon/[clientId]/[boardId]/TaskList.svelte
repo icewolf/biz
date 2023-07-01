@@ -2,9 +2,10 @@
 	import { PUBLIC_INVOICENINJA_URL } from '$env/static/public';
 	import type { Task } from '$lib/types/invoiceninja/task';
 	import type { Card } from '$lib/types/trello/card';
+	import type { List } from '$lib/types/trello/list';
 	import { clipboard, popup, type PopupSettings } from '@skeletonlabs/skeleton';
 
-	export let tasks: (Card & { invoiceNinjaTasks: Task[] })[];
+	export let tasks: (Card & { list?: List; invoiceNinjaTasks: Task[] })[];
 
 	const createInvoiceNinjaPopupConfig = (id: string): PopupSettings => ({
 		event: 'focus-click',
@@ -14,21 +15,28 @@
 </script>
 
 <div class="flex flex-col gap-4">
-	{#each tasks as { id, name, shortUrl, dateLastActivity, invoiceNinjaTasks } (id)}
-		<div class="card space-y-2 variant-glass-surface">
+	{#each tasks as { id, name, shortUrl, dateLastActivity, list, invoiceNinjaTasks } (id)}
+		<div class="card space-y-4 variant-glass-surface">
 			<header class="card-header whitespace-break-spaces flex justify-between gap-4 items-center">
-				<div class="flex items-center justify-between gap-2 w-full">
-					<span class="text-xl">{name}</span>
-					<div>
-						<button
-							type="button"
-							class="btn-icon btn-icon-sm variant-glass-surface"
-							use:clipboard={name}>📋</button
-						>
+				<div class="flex flex-col w-full">
+					<div class="flex items-center justify-between gap-2 w-full">
+						<span class="text-xl">{name}</span>
+						<div>
+							<button
+								type="button"
+								class="btn-icon btn-icon-sm variant-glass-surface"
+								use:clipboard={name}>📋</button
+							>
+						</div>
 					</div>
 				</div>
 				<span class="badge variant-glass-surface">{dateLastActivity}</span>
 			</header>
+			<section class="px-4">
+				{#if list}
+					<div><span class="badge variant-ringed-surface">{list.name}</span></div>
+				{/if}
+			</section>
 			<footer class="card-footer flex flex-1 justify-evenly gap-4 items-center">
 				<div class="btn-group variant-ringed-surface w-full">
 					<a class="w-full" target="_blank" rel="noopener noreferrer" href={shortUrl}
