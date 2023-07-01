@@ -27,7 +27,7 @@ export const load = async ({
 
 	const trelloCards = await trello.url(`/boards/${boardId}/cards/all`).get().json<Card[]>();
 
-	const activeTasks = tasks.filter((task) => !task.invoice_id);
+	const activeTasks = tasks.filter((task) => !task.is_deleted);
 	const trelloTasks = trelloCards
 		.map((trelloCard) => ({
 			...trelloCard,
