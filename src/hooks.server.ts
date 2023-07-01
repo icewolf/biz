@@ -1,13 +1,15 @@
-import { INVOICENINJA_API_TOKEN, TRELLO_API_KEY, TRELLO_API_TOKEN } from '$env/static/private';
-import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
+import {
+	INVOICENINJA_API_TOKEN,
+	TRELLO_API_KEY,
+	TRELLO_API_TOKEN
+} from '$env/static/private';
+import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, PUBLIC_INVOICENINJA_URL } from '$env/static/public';
 import { resolvePath } from '$lib/utils';
 import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
 import { redirect, type Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import wretch from 'wretch';
 import queryString from 'wretch/addons/queryString';
-import createClient from 'openapi-fetch';
-import type { paths as TrelloPaths } from '$lib/types/trello';
 
 const setupSupabase: Handle = async ({ event, resolve }) => {
 	event.locals.supabase = createSupabaseServerClient({
@@ -63,7 +65,8 @@ const withAPIClients: Handle = ({ event, resolve }) => {
 		.auth(`OAuth oauth_consumer_key="${TRELLO_API_KEY}", oauth_token="${TRELLO_API_TOKEN}"`);
 
 	event.locals.invoiceNinja = baseClient
-		.url('https://billing.icewolf.ca/api/v1')
+		.url(PUBLIC_INVOICENINJA_URL)
+		.url('/api/v1')
 		.headers({ 'x-api-token': INVOICENINJA_API_TOKEN });
 
 	return resolve(event);
