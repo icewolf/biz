@@ -51,7 +51,7 @@
 			<AppBar>
 				<svelte:fragment slot="lead"><a href="/">Icewolf Biz</a></svelte:fragment>
 				<svelte:fragment slot="trail">
-					<p>Hi {data.session?.user.email} :)</p>
+					<p>Logged in as <span class="badge badge-glass">{data.session?.user.email}</span></p>
 					<form method="POST" action={resolvePath('/logout')}>
 						<button class="btn variant-soft-surface">Logout</button>
 					</form>

@@ -43,5 +43,10 @@ export const load = async ({
 				return task.invoiceNinjaTasks.some((inTask) => inTask.invoice_id?.length);
 		});
 
-	return { invoiceNinjaTasks: activeTasks, trelloTasks, activeFilter };
+	return {
+		invoiceNinjaTasks: activeTasks,
+		trelloTasks,
+		totalTasks: trelloCards.length,
+		activeFilter
+	};
 };
