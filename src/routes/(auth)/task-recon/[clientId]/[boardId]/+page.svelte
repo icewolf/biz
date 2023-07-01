@@ -14,7 +14,7 @@
 	<h3 class="h3">Tasks</h3>
 
 	<div class="card p-8 variant-outline-surface space-y-2 flex flex-col">
-		<div class="flex justify-between items-center">
+		<div class="rounded-md variant-filled-surface px-4 py-2 flex justify-between items-center sticky top-1 z-50 shadow-lg">
 			<div class="space-x-2">
 				{#each Object.values(filterOptions.Values) as filter}
 					<a

@@ -2,7 +2,7 @@
 	import { PUBLIC_INVOICENINJA_URL } from '$env/static/public';
 	import type { Task } from '$lib/types/invoiceninja/task';
 	import type { Card } from '$lib/types/trello/card';
-	import { popup, type PopupSettings } from '@skeletonlabs/skeleton';
+	import { clipboard, popup, type PopupSettings } from '@skeletonlabs/skeleton';
 
 	export let tasks: (Card & { invoiceNinjaTasks: Task[] })[];
 
@@ -16,26 +16,26 @@
 <div class="flex flex-col gap-4">
 	{#each tasks as { id, name, shortUrl, dateLastActivity, invoiceNinjaTasks } (id)}
 		<div class="card space-y-2 variant-glass-surface">
-			<header class="card-header whitespace-break-spaces flex justify-between">
-				<div>
+			<header class="card-header whitespace-break-spaces flex justify-between gap-4 items-center">
+				<div class="flex items-center justify-between gap-2 w-full">
 					<span class="text-xl">{name}</span>
+					<div>
+						<button
+							type="button"
+							class="btn-icon btn-icon-sm variant-glass-surface"
+							use:clipboard={name}>📋</button
+						>
+					</div>
 				</div>
-				<div>
-					<span class="badge variant-glass-surface">{dateLastActivity}</span>
-					{#each invoiceNinjaTasks ?? [] as inTask (inTask.id)}
-						{#if inTask.invoice_id}
-							<span class="badge variant-glass-secondary">Invoiced {dateLastActivity}</span>
-						{/if}
-					{/each}
-				</div>
+				<span class="badge variant-glass-surface">{dateLastActivity}</span>
 			</header>
 			<footer class="card-footer flex flex-1 justify-evenly gap-4 items-center">
-				<a
-					class="btn w-full variant-ringed-surface"
-					target="_blank"
-					rel="noopener noreferrer"
-					href={shortUrl}>Open in Trello</a
-				>
+				<div class="btn-group variant-ringed-surface w-full">
+					<a class="w-full" target="_blank" rel="noopener noreferrer" href={shortUrl}
+						>Open in Trello</a
+					>
+					<button type="button" class="w-full" use:clipboard={shortUrl}>Copy Link</button>
+				</div>
 
 				{#if invoiceNinjaTasks.length === 1}
 					<a
