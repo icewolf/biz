@@ -13,8 +13,8 @@
 <div class="space-y-4">
 	<h3 class="h3">Tasks</h3>
 
-	<div class="card p-8 variant-outline-surface space-y-2 flex flex-col">
-		<div class="rounded-md variant-filled-surface px-4 py-2 flex justify-between items-center sticky top-1 z-50 shadow-lg">
+	<div class="space-y-2 flex flex-col">
+		<div class="rounded-md bg-surface-700 px-4 py-2 flex justify-between items-center sticky top-1 z-50 shadow-lg">
 			<div class="space-x-2">
 				{#each Object.values(filterOptions.Values) as filter}
 					<a
@@ -34,8 +34,8 @@
 					No cards matching filter
 				{/if}
 			</div>
-			<button class="btn variant-ghost-surface" type="button" on:click={() => invalidate('tasks')}
-				>Refresh</button
+			<button class="btn variant-ringed-surface" type="button" on:click={() => invalidate('tasks')}
+				>♻ Refresh</button
 			>
 		</div>
 		{#key activeFilter}
