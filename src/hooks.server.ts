@@ -6,6 +6,8 @@ import { redirect, type Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import wretch from 'wretch';
 import queryString from 'wretch/addons/queryString';
+import createClient from 'openapi-fetch';
+import type { paths as TrelloPaths } from '$lib/types/trello';
 
 const setupSupabase: Handle = async ({ event, resolve }) => {
 	event.locals.supabase = createSupabaseServerClient({
@@ -59,6 +61,7 @@ const withAPIClients: Handle = ({ event, resolve }) => {
 	event.locals.trello = baseClient
 		.url('https://api.trello.com/1')
 		.auth(`OAuth oauth_consumer_key="${TRELLO_API_KEY}", oauth_token="${TRELLO_API_TOKEN}"`);
+
 	event.locals.invoiceNinja = baseClient
 		.url('https://billing.icewolf.ca/api/v1')
 		.headers({ 'x-api-token': INVOICENINJA_API_TOKEN });
