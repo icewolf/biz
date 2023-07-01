@@ -8,6 +8,10 @@
 
 	import { AppBar, AppShell } from '@skeletonlabs/skeleton';
 
+	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
+	import { storePopup } from '@skeletonlabs/skeleton';
+	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
+
 	import { onMount } from 'svelte';
 	import { invalidate } from '$app/navigation';
 	import { resolvePath } from '$lib/utils';
@@ -39,11 +43,7 @@
 	$: title = ['Icewolf Biz', $page.data.title].filter(Boolean).join(' | ');
 </script>
 
-<svelte:head
-	><title
-		>{title}</title
-	></svelte:head
->
+<svelte:head><title>{title}</title></svelte:head>
 
 <AppShell>
 	<svelte:fragment slot="header">
