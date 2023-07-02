@@ -2,22 +2,28 @@
 	import { goto } from '$app/navigation';
 	import { resolvePath } from '$lib/utils.js';
 
+	import AwesomeDebouncePromise from 'awesome-debounce-promise';
+
 	export let data;
 
 	let clientId: string | undefined = data.clientId;
 	let boardId: string | undefined = data.boardId;
+
+	const handleNav = AwesomeDebouncePromise(async () => {
+		await goto(
+			resolvePath('/(auth)/task-recon/[clientId]/[boardId]', {
+				clientId,
+				boardId
+			})
+		);
+	}, 300);
 
 	$: if (
 		clientId?.length &&
 		boardId?.length &&
 		(clientId !== data.clientId || boardId !== data.boardId)
 	) {
-		goto(
-			resolvePath('/(auth)/task-recon/[clientId]/[boardId]', {
-				clientId,
-				boardId
-			})
-		);
+		handleNav();
 	}
 	$: ({ boardsByOrg } = data);
 </script>

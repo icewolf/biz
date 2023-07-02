@@ -6,6 +6,8 @@
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss';
 
+	import Logo from '$lib/assets/logo.svg?component';
+
 	import { AppBar, AppShell } from '@skeletonlabs/skeleton';
 
 	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
@@ -49,7 +51,12 @@
 	<svelte:fragment slot="header">
 		{#if data.session}
 			<AppBar>
-				<svelte:fragment slot="lead"><a href="/">Icewolf Biz</a></svelte:fragment>
+				<svelte:fragment slot="lead">
+					<a class="btn flex gap-2 hover:variant-ghost-surface" href="/">
+						<Logo width={32} height={32} />
+						<span class="text-xl font-semibold">Biz</span>
+					</a>
+				</svelte:fragment>
 				<svelte:fragment slot="trail">
 					<p>Logged in as <span class="badge badge-glass">{data.session?.user.email}</span></p>
 					<form method="POST" action={resolvePath('/logout')}>
