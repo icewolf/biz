@@ -23,7 +23,7 @@ export const load = async ({
 	const [{ data: tasks }, trelloLists, trelloCards] = await Promise.all([
 		invoiceNinja
 			.url('/tasks')
-			.query({ per_page: 500, client_id: clientId, include: 'status,client,invoice' })
+			.query({ per_page: 500, client_id: clientId, include: 'status,client' })
 			.get()
 			.json<GenericManyResponse<Task>>(),
 		trello.url(`/boards/${boardId}/lists`).get().json<List[]>(),
